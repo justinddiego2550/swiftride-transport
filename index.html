@@ -1,0 +1,947 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>SwiftRide — Premium Transport Services</title>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500;600&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --black: #0a0a0a;
+      --dark: #111318;
+      --card: #16191f;
+      --border: #252830;
+      --gold: #e8b84b;
+      --gold-light: #f5d07a;
+      --white: #f4f3ef;
+      --muted: #7a7d87;
+      --accent: #3b82f6;
+      --green: #22c55e;
+      --red: #ef4444;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--black);
+      color: var(--white);
+      font-family: 'DM Sans', sans-serif;
+      overflow-x: hidden;
+    }
+
+    /* ── NAV ── */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 1.2rem 4rem;
+      background: rgba(10,10,10,0.85);
+      backdrop-filter: blur(18px);
+      border-bottom: 1px solid var(--border);
+    }
+    .nav-logo {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 2rem;
+      letter-spacing: 2px;
+      color: var(--gold);
+      text-decoration: none;
+    }
+    .nav-logo span { color: var(--white); }
+    .nav-links { display: flex; gap: 2.5rem; list-style: none; }
+    .nav-links a {
+      text-decoration: none; color: var(--muted); font-weight: 500;
+      font-size: .9rem; letter-spacing: .5px; transition: color .25s;
+    }
+    .nav-links a:hover { color: var(--gold); }
+    .nav-cta {
+      background: var(--gold); color: var(--black);
+      padding: .65rem 1.6rem; border-radius: 4px;
+      font-weight: 600; font-size: .9rem; text-decoration: none;
+      transition: background .25s, transform .2s;
+    }
+    .nav-cta:hover { background: var(--gold-light); transform: translateY(-1px); }
+
+    /* ── HERO ── */
+    .hero {
+      min-height: 100vh;
+      display: flex; align-items: center;
+      position: relative; overflow: hidden;
+      padding: 9rem 4rem 5rem;
+    }
+    .hero-bg {
+      position: absolute; inset: 0;
+      background:
+        radial-gradient(ellipse 80% 60% at 70% 50%, rgba(232,184,75,.08) 0%, transparent 60%),
+        radial-gradient(ellipse 50% 80% at 20% 80%, rgba(59,130,246,.06) 0%, transparent 55%),
+        linear-gradient(160deg, #0a0a0a 0%, #111318 100%);
+    }
+    .hero-grid {
+      position: absolute; inset: 0; opacity: .04;
+      background-image: linear-gradient(var(--border) 1px, transparent 1px),
+                        linear-gradient(90deg, var(--border) 1px, transparent 1px);
+      background-size: 60px 60px;
+    }
+    .hero-content { position: relative; max-width: 700px; }
+    .hero-badge {
+      display: inline-flex; align-items: center; gap: .6rem;
+      background: rgba(232,184,75,.12); border: 1px solid rgba(232,184,75,.3);
+      color: var(--gold); padding: .4rem 1rem; border-radius: 50px;
+      font-size: .78rem; font-weight: 600; letter-spacing: 1px;
+      text-transform: uppercase; margin-bottom: 2rem;
+      animation: fadeUp .6s ease both;
+    }
+    .hero-badge::before { content: '●'; font-size: .5rem; }
+    .hero h1 {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(4rem, 8vw, 7.5rem);
+      line-height: .95;
+      letter-spacing: 2px;
+      animation: fadeUp .7s .1s ease both;
+    }
+    .hero h1 em {
+      font-family: 'DM Serif Display', serif;
+      font-style: italic;
+      color: var(--gold);
+    }
+    .hero-sub {
+      margin-top: 1.8rem;
+      color: var(--muted); font-size: 1.1rem; line-height: 1.7;
+      max-width: 520px;
+      animation: fadeUp .7s .2s ease both;
+    }
+    .hero-actions {
+      display: flex; gap: 1rem; margin-top: 2.8rem; flex-wrap: wrap;
+      animation: fadeUp .7s .3s ease both;
+    }
+    .btn-primary {
+      background: var(--gold); color: var(--black);
+      padding: .9rem 2.2rem; border-radius: 4px;
+      font-weight: 700; font-size: 1rem; text-decoration: none;
+      transition: all .25s; border: none; cursor: pointer;
+    }
+    .btn-primary:hover { background: var(--gold-light); transform: translateY(-2px); box-shadow: 0 12px 30px rgba(232,184,75,.25); }
+    .btn-outline {
+      background: transparent; color: var(--white);
+      padding: .9rem 2.2rem; border-radius: 4px;
+      font-weight: 600; font-size: 1rem; text-decoration: none;
+      border: 1px solid var(--border); transition: all .25s; cursor: pointer;
+    }
+    .btn-outline:hover { border-color: var(--gold); color: var(--gold); }
+
+    .hero-stats {
+      display: flex; gap: 3.5rem; margin-top: 4rem;
+      animation: fadeUp .7s .4s ease both;
+    }
+    .stat-item { }
+    .stat-num {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 2.8rem; color: var(--gold); line-height: 1;
+    }
+    .stat-label { color: var(--muted); font-size: .82rem; letter-spacing: .5px; margin-top: .3rem; }
+
+    .hero-visual {
+      position: absolute; right: 4rem; top: 50%; transform: translateY(-50%);
+      width: 48%; max-width: 620px;
+      animation: fadeIn .9s .3s ease both;
+    }
+    .hero-visual img {
+      width: 100%; border-radius: 12px;
+      box-shadow: 0 40px 100px rgba(0,0,0,.6), 0 0 0 1px var(--border);
+      object-fit: cover;
+    }
+    .hero-float-card {
+      position: absolute; bottom: -1.5rem; left: -2rem;
+      background: var(--card); border: 1px solid var(--border);
+      border-radius: 12px; padding: 1.2rem 1.5rem;
+      display: flex; align-items: center; gap: 1rem;
+      box-shadow: 0 20px 50px rgba(0,0,0,.4);
+      animation: float 3s ease-in-out infinite;
+    }
+    .float-icon { font-size: 2rem; }
+    .float-text { font-size: .8rem; color: var(--muted); }
+    .float-text strong { display: block; color: var(--white); font-size: 1rem; margin-bottom: .1rem; }
+
+    @keyframes float { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-8px)} }
+    @keyframes fadeUp { from{opacity:0;transform:translateY(24px)} to{opacity:1;transform:translateY(0)} }
+    @keyframes fadeIn { from{opacity:0} to{opacity:1} }
+
+    /* ── SECTION WRAPPER ── */
+    section { padding: 7rem 4rem; }
+    .section-label {
+      display: inline-block;
+      font-size: .75rem; font-weight: 700; letter-spacing: 2px;
+      text-transform: uppercase; color: var(--gold);
+      margin-bottom: 1rem;
+    }
+    .section-title {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(2.5rem, 4vw, 4rem);
+      letter-spacing: 1px; line-height: 1.05;
+      margin-bottom: 1rem;
+    }
+    .section-sub { color: var(--muted); font-size: 1rem; line-height: 1.7; max-width: 540px; }
+    .section-header { margin-bottom: 4rem; }
+
+    /* ── SERVICES ── */
+    #services { background: var(--dark); }
+    .services-grid {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 1.5rem;
+    }
+
+    .service-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      overflow: hidden;
+      transition: transform .3s, box-shadow .3s, border-color .3s;
+      position: relative;
+    }
+    .service-card:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 30px 70px rgba(0,0,0,.4);
+      border-color: rgba(232,184,75,.3);
+    }
+    .service-card.featured { border-color: var(--gold); }
+    .featured-badge {
+      position: absolute; top: 1.2rem; right: 1.2rem;
+      background: var(--gold); color: var(--black);
+      font-size: .7rem; font-weight: 700; letter-spacing: 1px;
+      text-transform: uppercase; padding: .3rem .8rem; border-radius: 50px;
+      z-index: 2;
+    }
+    .card-img {
+      width: 100%; height: 220px; object-fit: cover; display: block;
+      transition: transform .4s;
+    }
+    .service-card:hover .card-img { transform: scale(1.04); }
+    .card-img-wrap { overflow: hidden; position: relative; }
+    .card-img-overlay {
+      position: absolute; inset: 0;
+      background: linear-gradient(to top, rgba(22,25,31,.9) 0%, transparent 50%);
+    }
+
+    .card-body { padding: 1.8rem; }
+    .card-icon { font-size: 1.8rem; margin-bottom: .8rem; }
+    .card-title {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 1.8rem; letter-spacing: 1px; margin-bottom: .5rem;
+    }
+    .card-desc { color: var(--muted); font-size: .9rem; line-height: 1.65; margin-bottom: 1.5rem; }
+
+    .card-features { list-style: none; margin-bottom: 1.8rem; display: flex; flex-direction: column; gap: .5rem; }
+    .card-features li {
+      display: flex; align-items: center; gap: .6rem;
+      font-size: .85rem; color: var(--muted);
+    }
+    .card-features li::before { content: '✓'; color: var(--green); font-weight: 700; font-size: .9rem; }
+
+    .card-pricing {
+      display: flex; align-items: flex-end; gap: .4rem;
+      padding-top: 1.5rem;
+      border-top: 1px solid var(--border);
+    }
+    .price-from { color: var(--muted); font-size: .78rem; margin-bottom: .35rem; }
+    .price-amount {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 2.6rem; line-height: 1; color: var(--gold);
+    }
+    .price-unit { color: var(--muted); font-size: .82rem; margin-bottom: .4rem; }
+
+    /* ── FLEET ── */
+    #fleet { background: var(--black); }
+    .fleet-grid {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 1.2rem;
+    }
+    .fleet-card {
+      background: var(--card); border: 1px solid var(--border);
+      border-radius: 12px; overflow: hidden;
+      transition: all .3s;
+    }
+    .fleet-card:hover { border-color: rgba(232,184,75,.3); transform: translateY(-4px); }
+    .fleet-img { width: 100%; height: 180px; object-fit: cover; display: block; }
+    .fleet-info { padding: 1.2rem; }
+    .fleet-name { font-weight: 700; font-size: 1rem; margin-bottom: .3rem; }
+    .fleet-detail { color: var(--muted); font-size: .82rem; line-height: 1.5; }
+    .fleet-tags { display: flex; gap: .5rem; flex-wrap: wrap; margin-top: .8rem; }
+    .fleet-tag {
+      background: rgba(232,184,75,.1); color: var(--gold);
+      font-size: .72rem; font-weight: 600; padding: .25rem .7rem;
+      border-radius: 50px; border: 1px solid rgba(232,184,75,.2);
+    }
+
+    /* ── PRICING TABLE ── */
+    #pricing { background: var(--dark); }
+    .pricing-grid {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 1.5rem; align-items: start;
+    }
+    .plan-card {
+      background: var(--card); border: 1px solid var(--border);
+      border-radius: 16px; padding: 2rem; position: relative;
+      transition: all .3s;
+    }
+    .plan-card:hover { transform: translateY(-4px); box-shadow: 0 20px 50px rgba(0,0,0,.3); }
+    .plan-card.popular {
+      border-color: var(--gold);
+      background: linear-gradient(135deg, #16191f 0%, #1c1f28 100%);
+    }
+    .popular-tag {
+      position: absolute; top: -1px; left: 50%; transform: translateX(-50%);
+      background: var(--gold); color: var(--black);
+      font-size: .7rem; font-weight: 800; letter-spacing: 1px;
+      text-transform: uppercase; padding: .4rem 1.2rem;
+      border-radius: 0 0 8px 8px;
+    }
+    .plan-name {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 1.5rem; letter-spacing: 1px; margin-bottom: .5rem;
+    }
+    .plan-desc { color: var(--muted); font-size: .85rem; margin-bottom: 1.8rem; line-height: 1.6; }
+    .plan-price {
+      display: flex; align-items: flex-end; gap: .3rem; margin-bottom: 2rem;
+    }
+    .plan-price .amount {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 3.5rem; line-height: 1; color: var(--white);
+    }
+    .plan-price .currency { color: var(--gold); font-size: 1.3rem; margin-bottom: .7rem; font-weight: 600; }
+    .plan-price .per { color: var(--muted); font-size: .82rem; margin-bottom: .5rem; }
+    .plan-features { list-style: none; display: flex; flex-direction: column; gap: .75rem; margin-bottom: 2rem; }
+    .plan-features li {
+      display: flex; align-items: flex-start; gap: .7rem;
+      font-size: .87rem; color: var(--muted); line-height: 1.5;
+    }
+    .plan-features li .chk { color: var(--green); font-weight: 700; flex-shrink: 0; }
+    .plan-features li .x { color: #4b5563; font-weight: 700; flex-shrink: 0; }
+    .plan-btn {
+      display: block; text-align: center; padding: .85rem;
+      border-radius: 6px; font-weight: 700; font-size: .9rem;
+      text-decoration: none; cursor: pointer; border: none; width: 100%;
+      transition: all .25s;
+    }
+    .plan-btn-primary { background: var(--gold); color: var(--black); }
+    .plan-btn-primary:hover { background: var(--gold-light); transform: translateY(-1px); }
+    .plan-btn-outline { background: transparent; color: var(--white); border: 1px solid var(--border); }
+    .plan-btn-outline:hover { border-color: var(--gold); color: var(--gold); }
+
+    /* ── HOW IT WORKS ── */
+    #how { background: var(--black); }
+    .steps { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 2rem; position: relative; }
+    .step {
+      text-align: center; padding: 2rem 1.5rem;
+      background: var(--card); border: 1px solid var(--border); border-radius: 16px;
+    }
+    .step-num {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 4rem; color: rgba(232,184,75,.15); line-height: 1;
+      margin-bottom: -.5rem;
+    }
+    .step-icon { font-size: 2.2rem; margin-bottom: .8rem; }
+    .step-title { font-weight: 700; font-size: 1rem; margin-bottom: .5rem; }
+    .step-desc { color: var(--muted); font-size: .85rem; line-height: 1.65; }
+
+    /* ── TESTIMONIALS ── */
+    #reviews { background: var(--dark); }
+    .reviews-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.5rem; }
+    .review-card {
+      background: var(--card); border: 1px solid var(--border);
+      border-radius: 16px; padding: 2rem;
+    }
+    .stars { color: var(--gold); font-size: 1rem; margin-bottom: 1rem; letter-spacing: 2px; }
+    .review-text { color: #b0b3bd; font-size: .9rem; line-height: 1.75; margin-bottom: 1.5rem; font-style: italic; }
+    .reviewer { display: flex; align-items: center; gap: 1rem; }
+    .reviewer-avatar {
+      width: 44px; height: 44px; border-radius: 50%;
+      background: linear-gradient(135deg, var(--gold), #b8860b);
+      display: flex; align-items: center; justify-content: center;
+      font-weight: 700; font-size: 1rem; color: var(--black);
+      flex-shrink: 0;
+    }
+    .reviewer-name { font-weight: 600; font-size: .9rem; }
+    .reviewer-loc { color: var(--muted); font-size: .78rem; margin-top: .1rem; }
+
+    /* ── CTA BANNER ── */
+    .cta-section {
+      background: linear-gradient(135deg, #1a1500 0%, #111318 50%, #0a1220 100%);
+      border-top: 1px solid var(--border); border-bottom: 1px solid var(--border);
+      padding: 7rem 4rem;
+      text-align: center; position: relative; overflow: hidden;
+    }
+    .cta-glow {
+      position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%);
+      width: 600px; height: 300px;
+      background: radial-gradient(ellipse, rgba(232,184,75,.1) 0%, transparent 70%);
+      pointer-events: none;
+    }
+    .cta-section h2 {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(2.5rem, 5vw, 5rem); letter-spacing: 2px;
+      position: relative;
+    }
+    .cta-section p { color: var(--muted); font-size: 1.05rem; margin: 1.2rem auto 2.5rem; max-width: 500px; position: relative; }
+    .cta-actions { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; position: relative; }
+
+    /* ── FOOTER ── */
+    footer {
+      background: var(--dark); border-top: 1px solid var(--border);
+      padding: 4rem 4rem 2rem;
+    }
+    .footer-top {
+      display: grid; grid-template-columns: 2fr 1fr 1fr 1fr;
+      gap: 3rem; margin-bottom: 3rem;
+    }
+    .footer-brand .logo { font-family: 'Bebas Neue', sans-serif; font-size: 2rem; color: var(--gold); letter-spacing: 2px; }
+    .footer-brand .logo span { color: var(--white); }
+    .footer-desc { color: var(--muted); font-size: .88rem; line-height: 1.7; margin-top: .8rem; }
+    .footer-col h4 { font-weight: 700; font-size: .85rem; letter-spacing: 1px; text-transform: uppercase; margin-bottom: 1.2rem; color: var(--white); }
+    .footer-col ul { list-style: none; display: flex; flex-direction: column; gap: .7rem; }
+    .footer-col a { color: var(--muted); text-decoration: none; font-size: .88rem; transition: color .2s; }
+    .footer-col a:hover { color: var(--gold); }
+    .footer-bottom {
+      border-top: 1px solid var(--border); padding-top: 2rem;
+      display: flex; justify-content: space-between; align-items: center;
+      color: var(--muted); font-size: .82rem; flex-wrap: wrap; gap: 1rem;
+    }
+    .contact-info { display: flex; flex-direction: column; gap: .5rem; margin-top: 1rem; }
+    .contact-info span { font-size: .85rem; color: var(--muted); display: flex; align-items: center; gap: .5rem; }
+    .contact-info span strong { color: var(--white); }
+
+    /* ── RESPONSIVE ── */
+    @media(max-width: 1100px) {
+      .hero-visual { display: none; }
+      .hero-content { max-width: 100%; }
+      .footer-top { grid-template-columns: 1fr 1fr; }
+    }
+    @media(max-width: 768px) {
+      nav { padding: 1rem 1.5rem; }
+      .nav-links { display: none; }
+      section { padding: 5rem 1.5rem; }
+      .hero { padding: 7rem 1.5rem 4rem; }
+      .hero-stats { gap: 2rem; flex-wrap: wrap; }
+      .cta-section { padding: 5rem 1.5rem; }
+      footer { padding: 3rem 1.5rem 1.5rem; }
+      .footer-top { grid-template-columns: 1fr 1fr; gap: 2rem; }
+      .footer-bottom { flex-direction: column; text-align: center; }
+    }
+    @media(max-width: 480px) {
+      .footer-top { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a class="nav-logo" href="#">Swift<span>Ride</span></a>
+  <ul class="nav-links">
+    <li><a href="#services">Services</a></li>
+    <li><a href="#fleet">Fleet</a></li>
+    <li><a href="#pricing">Pricing</a></li>
+    <li><a href="#how">How It Works</a></li>
+    <li><a href="#reviews">Reviews</a></li>
+  </ul>
+  <a class="nav-cta" href="#pricing">Book a Ride</a>
+</nav>
+
+<!-- HERO -->
+<section class="hero" id="home">
+  <div class="hero-bg"></div>
+  <div class="hero-grid"></div>
+  <div class="hero-content">
+    <div class="hero-badge">Available 24/24 · All Cities</div>
+    <h1>Your <em>Journey,</em><br>Our Priority</h1>
+    <p class="hero-sub">Premium transport services across the city — buses, private cars, and taxis. Reliable, safe, and on time, every time.</p>
+    <div class="hero-actions">
+      <a href="#services" class="btn-primary">Explore Services</a>
+      <a href="#pricing" class="btn-outline">View Pricing</a>
+    </div>
+    <div class="hero-stats">
+      <div class="stat-item">
+        <div class="stat-num">50K+</div>
+        <div class="stat-label">Happy Passengers</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-num">120+</div>
+        <div class="stat-label">Vehicles in Fleet</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-num">99%</div>
+        <div class="stat-label">On-Time Rate</div>
+      </div>
+    </div>
+  </div>
+  <div class="hero-visual">
+    <img src="https://images.unsplash.com/photo-1544620347-c4fd4a3d5957?w=800&q=80" alt="Premium transport" />
+    <div class="hero-float-card">
+      <div class="float-icon">🚀</div>
+      <div class="float-text">
+        <strong>Next ride in 3 min</strong>
+        2 drivers nearby
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SERVICES -->
+<section id="services">
+  <div class="section-header">
+    <span class="section-label">What We Offer</span>
+    <h2 class="section-title">Three Ways to Travel</h2>
+    <p class="section-sub">Choose the transport that fits your budget and comfort — from shared buses to exclusive private rides.</p>
+  </div>
+
+  <div class="services-grid">
+
+    <!-- BUS -->
+    <div class="service-card">
+      <div class="card-img-wrap">
+        <img class="card-img"
+          src="c:\Users\justi\Downloads\download (2).jpg"
+          alt="Bus Service" />
+        <div class="card-img-overlay"></div>
+      </div>
+      <div class="card-body">
+        <div class="card-icon">🚌</div>
+        <div class="card-title">Bus Service</div>
+        <p class="card-desc">Affordable shared transport on fixed city routes. Ideal for daily commuters and groups looking for a cost-effective, eco-friendly ride.</p>
+        <ul class="card-features">
+          <li>Fixed schedule & dedicated routes</li>
+          <li>Air-conditioned modern coaches</li>
+          <li>Wi-Fi on select routes</li>
+          <li>Monthly pass available</li>
+          <li>Wheelchair accessible</li>
+        </ul>
+        <div class="card-pricing">
+          <span class="price-from">From</span>
+          <span class="price-amount">$3</span>
+          <span class="price-unit">/ per ride</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- PRIVATE TRANSPORT -->
+    <div class="service-card featured">
+      <div class="featured-badge">Most Popular</div>
+      <div class="card-img-wrap">
+        <img class="card-img"
+          src="c:\Users\justi\Downloads\download (4).jpg"
+          alt="Private Transport" />
+        <div class="card-img-overlay"></div>
+      </div>
+      <div class="card-body">
+        <div class="card-icon">🚙</div>
+        <div class="card-title">Private Transport</div>
+        <p class="card-desc">Exclusive, door-to-door service in premium vehicles. Perfect for business travel, airport transfers, and special occasions.</p>
+        <ul class="card-features">
+          <li>Dedicated professional chauffeur</li>
+          <li>Luxury sedan or SUV options</li>
+          <li>Meet & greet at airports</li>
+          <li>Complimentary bottled water</li>
+          <li>Flight tracking included</li>
+        </ul>
+        <div class="card-pricing">
+          <span class="price-from">From</span>
+          <span class="price-amount">$35</span>
+          <span class="price-unit">/ per trip</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- TAXI -->
+    <div class="service-card">
+      <div class="card-img-wrap">
+        <img class="card-img"
+          src="c:\Users\justi\Downloads\download (3).jpg"
+          alt="Taxi Service" />
+        <div class="card-img-overlay"></div>
+      </div>
+      <div class="card-body">
+        <div class="card-icon">🚕</div>
+        <div class="card-title">Taxi Service</div>
+        <p class="card-desc">Fast, on-demand rides available anywhere in the city. Book instantly via app or phone — your taxi arrives in minutes.</p>
+        <ul class="card-features">
+          <li>Available 24/7, 365 days</li>
+          <li>GPS-tracked for safety</li>
+          <li>Metered & transparent pricing</li>
+          <li>Cashless payment accepted</li>
+          <li>Rated & verified drivers</li>
+        </ul>
+        <div class="card-pricing">
+          <span class="price-from">From</span>
+          <span class="price-amount">$8</span>
+          <span class="price-unit">/ per trip</span>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- FLEET -->
+<section id="fleet">
+  <div class="section-header">
+    <span class="section-label">Our Fleet</span>
+    <h2 class="section-title">Modern Vehicles,<br>Every Category</h2>
+    <p class="section-sub">Our diverse fleet is regularly serviced and maintained to the highest safety standards.</p>
+  </div>
+
+  <div class="fleet-grid">
+    <div class="fleet-card">
+      <img class="fleet-img" src="c:\Users\justi\Downloads\download (1).jpg" alt="City Coach" />
+      <div class="fleet-info">
+        <div class="fleet-name">City Coach Bus</div>
+        <div class="fleet-detail">40-seat capacity, air-conditioned, fixed city routes with multiple stops.</div>
+        <div class="fleet-tags"><span class="fleet-tag">40 Seats</span><span class="fleet-tag">A/C</span><span class="fleet-tag">Wi-Fi</span></div>
+      </div>
+    </div>
+    <div class="fleet-card">
+      <img class="fleet-img" src="c:\Users\justi\Downloads\download.jpg" alt="Mini Bus" />
+      <div class="fleet-info">
+        <div class="fleet-name">Mini Bus Shuttle</div>
+        <div class="fleet-detail">16-seat shuttle for group trips, corporate transfers, and school routes.</div>
+        <div class="fleet-tags"><span class="fleet-tag">16 Seats</span><span class="fleet-tag">Group</span><span class="fleet-tag">Charter</span></div>
+      </div>
+    </div>
+    <div class="fleet-card">
+      <img class="fleet-img" src="c:\Users\justi\Downloads\download (6).jpg" alt="Luxury Sedan" />
+      <div class="fleet-info">
+        <div class="fleet-name">Luxury Sedan</div>
+        <div class="fleet-detail">Premium class vehicles for executive travel and VIP client transfers.</div>
+        <div class="fleet-tags"><span class="fleet-tag">4 Seats</span><span class="fleet-tag">Premium</span><span class="fleet-tag">Leather</span></div>
+      </div>
+    </div>
+    <div class="fleet-card">
+      <img class="fleet-img" src="c:\Users\justi\Downloads\download (4).jpg" alt="SUV" />
+      <div class="fleet-info">
+        <div class="fleet-name">Executive SUV</div>
+        <div class="fleet-detail">Spacious SUV ideal for families, airport runs, or off-road terrain.</div>
+        <div class="fleet-tags"><span class="fleet-tag">7 Seats</span><span class="fleet-tag">4WD</span><span class="fleet-tag">Spacious</span></div>
+      </div>
+    </div>
+    <div class="fleet-card">
+      <img class="fleet-img" src="c:\Users\justi\Downloads\download (3).jpg" alt="Standard Taxi" />
+      <div class="fleet-info">
+        <div class="fleet-name">Standard Taxi</div>
+        <div class="fleet-detail">Reliable everyday taxi for quick city hops with metered transparent pricing.</div>
+        <div class="fleet-tags"><span class="fleet-tag">4 Seats</span><span class="fleet-tag">Metered</span><span class="fleet-tag">24/7</span></div>
+      </div>
+    </div>
+    <div class="fleet-card">
+      <img class="fleet-img" src="c:\Users\justi\Downloads\download (4).jpg" alt="Van" />
+      <div class="fleet-info">
+        <div class="fleet-name">Cargo & People Van</div>
+        <div class="fleet-detail">8-seat vans for large families, events, or luggage-heavy airport rides.</div>
+        <div class="fleet-tags"><span class="fleet-tag">8 Seats</span><span class="fleet-tag">Luggage</span><span class="fleet-tag">Events</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PRICING -->
+<section id="pricing">
+  <div class="section-header">
+    <span class="section-label">Transparent Pricing</span>
+    <h2 class="section-title">Simple, Clear Plans</h2>
+    <p class="section-sub">No hidden fees. No surprises. Pick the plan that matches your travel needs.</p>
+  </div>
+
+  <div class="pricing-grid">
+
+    <!-- BUS PASS -->
+    <div class="plan-card">
+      <div class="plan-name">🚌 Bus Pass</div>
+      <p class="plan-desc">Best for daily commuters using our fixed bus routes.</p>
+      <div class="plan-price">
+        <span class="currency">$</span>
+        <span class="amount">30</span>
+        <span class="per">/ month</span>
+      </div>
+      <ul class="plan-features">
+        <li><span class="chk">✓</span> Unlimited bus rides</li>
+        <li><span class="chk">✓</span> All city routes covered</li>
+        <li><span class="chk">✓</span> Digital monthly pass</li>
+        <li><span class="chk">✓</span> Priority boarding</li>
+        <li><span class="x">✗</span> Private vehicle</li>
+        <li><span class="x">✗</span> On-demand pickup</li>
+      </ul>
+      <button class="plan-btn plan-btn-outline">Get Bus Pass</button>
+    </div>
+
+    <!-- TAXI STANDARD -->
+    <div class="plan-card popular">
+      <div class="popular-tag">⭐ Most Popular</div>
+      <div class="plan-name">s Taxi Standard</div>
+      <p class="plan-desc">Flexible on-demand taxi rides with transparent metered rates.</p>
+      <div class="plan-price">
+        <span class="currency">$</span>
+        <span class="amount">8</span>
+        <span class="per">/ base fare</span>
+      </div>
+      <ul class="plan-features">
+        <li><span class="chk">✓</span> 24/24 availability</li>
+        <li><span class="chk">✓</span> GPS tracked rides</li>
+        <li><span class="chk">✓</span> Rated & verified drivers</li>
+        <li><span class="chk">✓</span> Cash & card accepted</li>
+        <li><span class="chk">✓</span> Real-time ETA updates</li>
+        <li><span class="x">✗</span> Dedicated chauffeur</li>
+      </ul>
+      <button class="plan-btn plan-btn-primary">Book a Taxi</button>
+    </div>
+
+    <!-- PRIVATE EXECUTIVE -->
+    <div class="plan-card">
+      <div class="plan-name">🚙 Private Executive</div>
+      <p class="plan-desc">Premium door-to-door service with professional chauffeurs.</p>
+      <div class="plan-price">
+        <span class="currency">$</span>
+        <span class="amount">35</span>
+        <span class="per">/ per trip</span>
+      </div>
+      <ul class="plan-features">
+        <li><span class="chk">✓</span> Dedicated chauffeur</li>
+        <li><span class="chk">✓</span> Luxury vehicle selection</li>
+        <li><span class="chk">✓</span> Flight tracking & meet & greet</li>
+        <li><span class="chk">✓</span> Complimentary water & Wi-Fi</li>
+        <li><span class="chk">✓</span> Corporate billing available</li>
+        <li><span class="chk">✓</span> Cancel up to 1 hr prior</li>
+      </ul>
+      <button class="plan-btn plan-btn-outline">Book Private Ride</button>
+    </div>
+
+    <!-- CORPORATE -->
+    <div class="plan-card">
+      <div class="plan-name">🏢 Corporate Plan</div>
+      <p class="plan-desc">Custom transport solutions for businesses with regular travel needs.</p>
+      <div class="plan-price">
+        <span class="currency">$</span>
+        <span class="amount">299</span>
+        <span class="per">/ month</span>
+      </div>
+      <ul class="plan-features">
+        <li><span class="chk">✓</span> All service types included</li>
+        <li><span class="chk">✓</span> Dedicated account manager</li>
+        <li><span class="chk">✓</span> Monthly invoicing</li>
+        <li><span class="chk">✓</span> Fleet of up to 10 employees</li>
+        <li><span class="chk">✓</span> Priority dispatch</li>
+        <li><span class="chk">✓</span> Analytics dashboard</li>
+      </ul>
+      <button class="plan-btn plan-btn-outline">Contact Sales</button>
+    </div>
+
+  </div>
+</section>
+
+<!-- HOW IT WORKS -->
+<section id="how">
+  <div class="section-header">
+    <span class="section-label">Simple Process</span>
+    <h2 class="section-title">How It Works</h2>
+    <p class="section-sub">Booking your ride takes less than a minute. Here's how easy it is.</p>
+  </div>
+
+  <div class="steps">
+    <div class="step">
+      <div class="step-num">01</div>
+      <div class="step-icon">📍</div>
+      <div class="step-title">Enter Your Location</div>
+      <p class="step-desc">Open the app or website, set your pick-up and drop-off points anywhere in the city.</p>
+    </div>
+    <div class="step">
+      <div class="step-num">02</div>
+      <div class="step-icon">🚘</div>
+      <div class="step-title">Choose Your Ride</div>
+      <p class="step-desc">Select from Bus, Taxi, or Private transport based on your needs and budget.</p>
+    </div>
+    <div class="step">
+      <div class="step-num">03</div>
+      <div class="step-icon">💳</div>
+      <div class="step-title">Confirm & Pay</div>
+      <p class="step-desc">Review your price upfront and pay securely by card, cash, or digital wallet.</p>
+    </div>
+    <div class="step">
+      <div class="step-num">04</div>
+      <div class="step-icon">✅</div>
+      <div class="step-title">Enjoy Your Ride</div>
+      <p class="step-desc">Track your driver in real-time and enjoy a safe, comfortable journey to your destination.</p>
+    </div>
+  </div>
+</section>
+
+<!-- TESTIMONIALS -->
+<section id="reviews">
+  <div class="section-header">
+    <span class="section-label">Customer Reviews</span>
+    <h2 class="section-title">What Passengers Say</h2>
+    <p class="section-sub">Thousands of satisfied riders trust SwiftRide every day.</p>
+  </div>
+
+  <div class="reviews-grid">
+    <div class="review-card">
+      <div class="stars">★★★★★</div>
+      <p class="review-text">The private car service is exceptional. My chauffeur was professional, the car was spotless, and they tracked my flight perfectly. I use SwiftRide for every airport run.</p>
+      <div class="reviewer">
+        <div class="reviewer-avatar">NM</div>
+        <div>
+          <div class="reviewer-name">Ngabo Medal</div>
+          <div class="reviewer-loc">📍 Business Traveler, Rwanda,Kigali</div>
+        </div>
+      </div>
+    </div>
+    <div class="review-card">
+      <div class="stars">★★★★★</div>
+      <p class="review-text">I rely on the monthly bus pass for my daily commute. The buses are always on time, clean, and the Wi-Fi works great. Saves me so much money compared to driving.</p>
+      <div class="reviewer">
+        <div class="reviewer-avatar">GM</div>
+        <div>
+          <div class="reviewer-name">Gisele Mashai</div>
+          <div class="reviewer-loc">📍 Daily Commuter, KIgali,Rusizi</div>
+        </div>
+      </div>
+    </div>
+    <div class="review-card">
+      <div class="stars">★★★★★</div>
+      <p class="review-text">Booked a taxi late at night and the driver arrived in under 4 minutes. The app is smooth, payment was easy, and I felt completely safe. Highly recommend!</p>
+      <div class="reviewer">
+        <div class="reviewer-avatar">AK</div>
+        <div>
+          <div class="reviewer-name">Aisha Kamara</div>
+          <div class="reviewer-loc">📍 Rwanda Tour, Kibuye,Kanombe</div>
+        </div>
+      </div>
+    </div>
+    <div class="review-card">
+      <div class="stars">★★★★★</div>
+      <p class="review-text">Our company switched to the corporate plan and it's been a game-changer. The account manager is responsive and the monthly billing makes everything so simple.</p>
+      <div class="reviewer">
+        <div class="reviewer-avatar">RP</div>
+        <div>
+          <div class="reviewer-name">Robert Patel</div>
+          <div class="reviewer-loc">📍 Operations Director, Seattle</div>
+        </div>
+      </div>
+    </div>
+    <div class="review-card">
+      <div class="stars">★★★★☆</div>
+      <p class="review-text">The executive SUV was perfect for our family trip to the airport. Plenty of room for luggage and 5 people. Driver was super friendly and helpful with the bags.</p>
+      <div class="reviewer">
+        <div class="reviewer-avatar">PM</div>
+        <div>
+          <div class="reviewer-name">Prime Minister</div>
+          <div class="reviewer-loc">📍 Day Shift, Kiyovu</div>
+        </div>
+      </div>
+    </div>
+    <div class="review-card">
+      <div class="stars">★★★★★</div>
+      <p class="review-text">Fast booking, transparent pricing, professional drivers. This is how urban transport should work. I've deleted every other ride app from my phone.</p>
+      <div class="reviewer">
+        <div class="reviewer-avatar">DG</div>
+        <div>
+          <div class="reviewer-name">David Gonzalez</div>
+          <div class="reviewer-loc">📍 Frequent Rider, Uganda,Rwanda</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA BANNER -->
+<div class="cta-section">
+  <div class="cta-glow"></div>
+  <h2>Ready to Ride?</h2>
+  <p>Join 50,000+ passengers who trust SwiftRide for safe, affordable transport every day.</p>
+  <div class="cta-actions">
+    <a href="#pricing" class="btn-primary">Book Your First Ride</a>
+    <a href="tel:+18001234567" class="btn-outline">📞 Call Us: 079xxxxxxx SWIFT</a>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-top">
+    <div class="footer-brand">
+      <div class="logo">Swift<span>Ride</span></div>
+      <p class="footer-desc">Premium transport solutions for every journey. Buses, private cars, and taxis — all in one place. Trusted by thousands daily.</p>
+      <div class="contact-info">
+        <span>📧 <strong>hello@swiftride.com</strong></span>
+        <span>📞 <strong>079xxxxxxxSWIFTRIDE</strong></span>
+        <span>🕐 <strong>Available 24/24</strong></span>
+      </div>
+    </div>
+    <div class="footer-col">
+      <h4>Services</h4>
+      <ul>
+        <li><a href="#services">Bus Service</a></li>
+        <li><a href="#services">Private Transport</a></li>
+        <li><a href="#services">Taxi Service</a></li>
+        <li><a href="#pricing">Corporate Plan</a></li>
+        <li><a href="#fleet">Our Fleet</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Company</h4>
+      <ul>
+        <li><a href="#">About Us</a></li>
+        <li><a href="#">Careers</a></li>
+        <li><a href="#">Press</a></li>
+        <li><a href="#">Safety</a></li>
+        <li><a href="#">Blog</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Support</h4>
+      <ul>
+        <li><a href="#">Help Center</a></li>
+        <li><a href="#">Track My Ride</a></li>
+        <li><a href="#">Lost & Found</a></li>
+        <li><a href="#">Partner With Us</a></li>
+        <li><a href="#">Contact</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>© 2025 SwiftRide. All rights reserved.</span>
+    <span>Privacy Policy · Terms of Service · Cookie Policy</span>
+  </div>
+</footer>
+
+<script>
+  // Smooth scroll highlight on nav
+  const sections = document.querySelectorAll('section[id], .cta-section');
+  const navLinks = document.querySelectorAll('.nav-links a');
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        navLinks.forEach(l => {
+          l.style.color = l.getAttribute('href') === '#' + e.target.id ? 'var(--gold)' : '';
+        });
+      }
+    });
+  }, { threshold: 0.4 });
+  sections.forEach(s => observer.observe(s));
+
+  // Animate cards on scroll
+  const cards = document.querySelectorAll('.service-card, .fleet-card, .plan-card, .step, .review-card');
+  const cardObserver = new IntersectionObserver(entries => {
+    entries.forEach((e, i) => {
+      if (e.isIntersecting) {
+        e.target.style.opacity = '1';
+        e.target.style.transform = e.target.classList.contains('service-card') || e.target.classList.contains('plan-card')
+          ? 'translateY(0)' : 'translateY(0)';
+        cardObserver.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.1 });
+
+  cards.forEach((c, i) => {
+    c.style.opacity = '0';
+    c.style.transform = 'translateY(28px)';
+    c.style.transition = `opacity .5s ${i * 0.07}s ease, transform .5s ${i * 0.07}s ease, box-shadow .3s, border-color .3s`;
+    cardObserver.observe(c);
+  });
+</script>
+</body>
+</html>
